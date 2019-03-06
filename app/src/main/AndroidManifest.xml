@@ -3,6 +3,7 @@
     package="dev.n.d.cgserverandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".CallReceiver"
+                  android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE"
+                    android:enabled="true"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
