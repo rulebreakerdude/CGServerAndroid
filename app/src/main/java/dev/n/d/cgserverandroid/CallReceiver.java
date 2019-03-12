@@ -10,6 +10,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -17,19 +19,57 @@ public class CallReceiver extends BroadcastReceiver {
     static CallStartEndDetector listener;
     static final int CALL_NUMBER_REQUEST = 1;
     Context savedContext;
+    Class c;
+    Method m;
+    Object telephonyService;
 
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         savedContext = context;//not used currently
         if(listener == null){
             listener = new CallStartEndDetector();
         }
-
-
         TelephonyManager telephony = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
         telephony.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
+        //Modifying the original telephony to end call here
+        c = null;
+        try {
+            c = Class.forName(telephony.getClass().getName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        m = null;
+        try {
+            m = c != null ? c.getDeclaredMethod("getITelephony") : null;
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        if (m != null) {
+            m.setAccessible(true);
+        }
+        telephonyService = null;
+        try {
+            telephonyService = m.invoke(telephony);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        try {
+            c = Class.forName(telephonyService.getClass().getName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            m = c.getDeclaredMethod("endCall");
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        m.setAccessible(true);
+        //callback to end call m.invoke(telephonyService);
     }
 
 
@@ -52,7 +92,15 @@ public class CallReceiver extends BroadcastReceiver {
             switch (state) {
                 case TelephonyManager.CALL_STATE_RINGING:
                     isIncoming = true;
+
                     Log.d("state:","incoming call started");
+                    try {
+                        m.invoke(telephonyService);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case TelephonyManager.CALL_STATE_OFFHOOK:
                     //Transition of ringing->offhook are pickups of incoming calls.  Nothing down on them

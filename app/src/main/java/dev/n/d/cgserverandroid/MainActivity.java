@@ -27,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     StringRequest stringRequest;
     public final String REQUESTTAG = "requesttag";
     final int REQUEST_READ_PHONE_STATE=1;
+    final int REQUEST_MODIFY_PHONE_STATE=1;
+    final int REQUEST_CALL_PHONE=1;
     static final int CALL_NUMBER_REQUEST = 1;
 
 
@@ -49,14 +52,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         setContentView(R.layout.activity_main);
         //******************************************************************************************************************************
         //checking permissions
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+        int permissionCheck1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
 
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+        if (permissionCheck1 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_READ_PHONE_STATE);
+        }
+        int permissionCheck2 = ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_PHONE_STATE);
+
+        if (permissionCheck2 != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.MODIFY_PHONE_STATE}, REQUEST_MODIFY_PHONE_STATE);
+        }
+        int permissionCheck3 = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
+
+        if (permissionCheck3 != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PHONE);
         }
         //******************************************************************************************************************************
 
@@ -182,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
         });
         stringRequest.setTag(REQUESTTAG);
         requestQueue.add(stringRequest);
+
     }
     //******************************************************************************************************************************
 
