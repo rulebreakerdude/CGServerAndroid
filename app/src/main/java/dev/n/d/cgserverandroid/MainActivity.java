@@ -127,21 +127,6 @@ public class MainActivity extends AppCompatActivity {
     //******************************************************************************************************************************
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == CALL_NUMBER_REQUEST) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
-
-                // Do something with the contact here (bigger example below)
-            }
-        }
-    }
-    //******************************************************************************************************************************
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case REQUEST_READ_PHONE_STATE:
@@ -161,7 +146,8 @@ public class MainActivity extends AppCompatActivity {
     }
     //******************************************************************************************************************************
 
-    private void setupCallback(String currentServerName) {//the url address setup script
+    //the url address setup script
+    private void setupCallback(String currentServerName) {
         Toast.makeText(getBaseContext(), currentServerName, Toast.LENGTH_LONG).show();
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(getString(R.string.Current_Server_Name),currentServerName);
@@ -176,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
     }
     //******************************************************************************************************************************
 
-    public void onMissCall(String number) {//the url request on miss call script
+    //the url request on miss call script
+    public void onMissCall(String number) {
         Toast.makeText(getBaseContext(), "Calling Number: "+number, Toast.LENGTH_LONG).show();
         String urlCall=sp.getString((getString(R.string.Current_Server_Address)),"DNE")+"?number="+number;
         Log.d("url:",urlCall);
@@ -200,7 +187,8 @@ public class MainActivity extends AppCompatActivity {
     //******************************************************************************************************************************
 
 
-    public void onMissCall(View view) {//the url request on miss call script
+    //the url request on miss call script
+    public void onMissCall(View view) {
         String number = editTextPhoneNumber.getText().toString();
         onMissCall(number);
     }
