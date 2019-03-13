@@ -44,8 +44,8 @@ public class CallerRepository {
     }
     //**************************************************************************
 
-    public void callFromCGNet(String primary_key){
-        new callFromCGNetAsyncTask(mCallerDao).execute(primary_key);
+    public void callFromCGNet(String primaryKey){
+        new callFromCGNetAsyncTask(mCallerDao).execute(primaryKey);
     }
 
     private static class callFromCGNetAsyncTask extends AsyncTask<String, Void, Void> {
@@ -61,8 +61,8 @@ public class CallerRepository {
     }
     //**************************************************************************
 
-    public void callFromIMI(String primary_key){
-        new callFromIMIAsyncTask(mCallerDao).execute(primary_key);
+    public void callFromIMI(String primaryKey){
+        new callFromIMIAsyncTask(mCallerDao).execute(primaryKey);
     }
 
     private static class callFromIMIAsyncTask extends AsyncTask<String, Void, Void> {
@@ -78,8 +78,8 @@ public class CallerRepository {
     }
     //**************************************************************************
 
-    public void updateResponseIMI(String primary_key, String response){
-        new responseIMIAsyncTask(mCallerDao).execute(primary_key,response);
+    public void updateResponseIMI(String primaryKey, String response){
+        new responseIMIAsyncTask(mCallerDao).execute(primaryKey,response);
     }
 
     private static class responseIMIAsyncTask extends AsyncTask<String, Void, Void> {
@@ -95,8 +95,8 @@ public class CallerRepository {
     }
     //**************************************************************************
 
-    public void updateResponseCGNet(String primary_key, String response){
-        new responseCGNetAsyncTask(mCallerDao).execute(primary_key,response);
+    public void updateResponseCGNet(String primaryKey, String response){
+        new responseCGNetAsyncTask(mCallerDao).execute(primaryKey,response);
     }
 
     private static class responseCGNetAsyncTask extends AsyncTask<String, Void, Void> {
@@ -112,8 +112,8 @@ public class CallerRepository {
     }
     //**************************************************************************
 
-    public void updateApiDatetime(String primary_key, String datetime){
-        new updateApiDatetimeAsyncTask(mCallerDao).execute(primary_key,datetime);
+    public void updateApiDatetime(String primaryKey, String datetime){
+        new updateApiDatetimeAsyncTask(mCallerDao).execute(primaryKey,datetime);
     }
 
     private static class updateApiDatetimeAsyncTask extends AsyncTask<String, Void, Void> {
@@ -129,8 +129,8 @@ public class CallerRepository {
     }
     //**************************************************************************
 
-    public void updateSuccessfulCallbackDatetime(String primary_key, String datetime){
-        new updateSuccessfulCallbackDatetimeAsyncTask(mCallerDao).execute(primary_key,datetime);
+    public void updateSuccessfulCallbackDatetime(String primaryKey, String datetime){
+        new updateSuccessfulCallbackDatetimeAsyncTask(mCallerDao).execute(primaryKey,datetime);
     }
 
     private static class updateSuccessfulCallbackDatetimeAsyncTask extends AsyncTask<String, Void, Void> {
@@ -147,8 +147,8 @@ public class CallerRepository {
     //**************************************************************************
 
 
-    public void deleteAnEntry(String CallerToBeDeleted){
-        new deleteAnEntryAsyncTask(mCallerDao).execute(CallerToBeDeleted);
+    public void deleteAnEntry(String primaryKey){
+        new deleteAnEntryAsyncTask(mCallerDao).execute(primaryKey);
     }
 
     private static class deleteAnEntryAsyncTask extends AsyncTask<String, Void, Void> {
