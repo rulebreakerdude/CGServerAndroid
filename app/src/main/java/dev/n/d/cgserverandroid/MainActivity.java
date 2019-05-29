@@ -1,6 +1,8 @@
 package dev.n.d.cgserverandroid;
 
 import android.Manifest;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,10 +10,14 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.telecom.Call;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +34,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton radioButtonIMI;
     private RadioButton radioButtonCGNet;
     private EditText editTextPhoneNumber;
+    private CallerViewModel mCallerViewModel;
+    private CallerListAdapter callerListAdapter;
+    private RecyclerView recyclerView;
+    List<Caller> traineeRealList;
+
     SharedPreferences sp;
     public static final String MyPREFERENCES = "MyPrefs" ;
     RequestQueue requestQueue;
@@ -123,7 +137,23 @@ public class MainActivity extends AppCompatActivity {
             displayMessageToChooseServer();
         }
         //******************************************************************************************************************************
+
+        //recyclerview implementation
+        recyclerView = findViewById(R.id.recyclerview);
+        callerListAdapter = new CallerListAdapter(this);
+        recyclerView.setAdapter(callerListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mCallerViewModel = ViewModelProviders.of(this).get(CallerViewModel.class);
+        mCallerViewModel.getAllCallers().observe(MainActivity.this, new Observer<List<Caller>>() {
+            @Override
+            public void onChanged(@Nullable List<Caller> callerList) {
+                callerListAdapter.setCallers(callerList);
+            }
+        });
+
+
     }
+    //onCreate ends here
     //******************************************************************************************************************************
 
     @Override
@@ -189,8 +219,22 @@ public class MainActivity extends AppCompatActivity {
 
     //the url request on miss call script
     public void onMissCall(View view) {
+        mCallerViewModel.deleteAll();
         String number = editTextPhoneNumber.getText().toString();
         onMissCall(number);
+        SimpleDateFormat ft = new SimpleDateFormat ("yyMMddhhmmss");
+        Caller caller=new Caller();
+        caller.setCallerNumber(number);
+        Date dt1=new Date();
+        caller.setApiDatetime(ft.format(dt1));
+        Date dt2=new Date();
+        caller.setCallDatetime(ft.format(dt2));
+        Date dt3=new Date();
+        caller.setSuccessfulCallbackDatetime(ft.format(dt3));
+        caller.setResponseCGNet("S");
+        caller.setResponseIMI("S");
+        caller.setCallFromIMI(1);
+        mCallerViewModel.insert(caller);
     }
     //******************************************************************************************************************************
 

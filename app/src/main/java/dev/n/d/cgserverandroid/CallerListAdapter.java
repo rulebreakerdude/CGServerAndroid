@@ -52,11 +52,14 @@ public class CallerListAdapter extends RecyclerView.Adapter<CallerListAdapter.Ca
         if (mCallers != null) {
             Caller current = mCallers.get(position);
             holder.callerTextView.setText(current.getCallerNumber());
-            holder.datetimeOfCallTextView.setText(current.getCallDatetime());
-            holder.apiDatetimeTextView.setText(current.getApiDatetime());
+            String cdt=current.getCallDatetime().substring(2,6)+":"+current.getCallDatetime().substring(6,10);
+            holder.datetimeOfCallTextView.setText(cdt);
+            String adt = current.getApiDatetime().substring(2,6)+":"+current.getApiDatetime().substring(6,10);
+            holder.apiDatetimeTextView.setText(adt);
             holder.responseCGNetTextView.setText(current.getResponseCGNet());
             holder.responseIMITextView.setText(current.getResponseIMI());
-            holder.successfulCallTextView.setText(current.getSuccessfulCallbackDatetime());
+            String sdt = current.getSuccessfulCallbackDatetime().substring(2,6)+":"+current.getSuccessfulCallbackDatetime().substring(6,10);
+            holder.successfulCallTextView.setText(sdt);
             if(current.getCallFromCGNet()==1){
                 holder.fromCGNetCheckBox.setChecked(true);
             }

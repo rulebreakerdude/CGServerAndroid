@@ -108,4 +108,8 @@ public class Caller {
     public void setResponseIMI(String responseIMI) {
         this.responseIMI = responseIMI;
     }
+
+    public void setPrimaryKey(@NonNull int primaryKey) {
+        this.primaryKey = primaryKey;
+    }
 }

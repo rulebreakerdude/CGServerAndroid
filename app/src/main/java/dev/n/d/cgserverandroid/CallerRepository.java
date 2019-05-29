@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.List;
 
@@ -123,6 +124,7 @@ public class CallerRepository {
         }
         @Override
         protected Void doInBackground(final String... params) {
+            Log.d("tag me",params[1]);
             mAsyncTaskDao.updateApiDatetime(params[0],params[1]);
             return null;
         }
