@@ -2,6 +2,6 @@
     <string name="app_name">CGServerAndroid</string>
     <string name="Current_Server_Name">current_server_name</string>
     <string name="Current_Server_Address">current_server_address</string>
-    <string name="CGNet_API">http://cgnetswara.org/callback.php</string>
-    <string name="IMI_API">http://cgnetswara.org/callback_imi.php</string>
+    <string name="CGNet_API">http://cgnetswara.org/callback.php?number=</string>
+    <string name="IMI_API">http://flask-aws-dev.ap-south-1.elasticbeanstalk.com/callCGNetViaIMI/</string>
 </resources>

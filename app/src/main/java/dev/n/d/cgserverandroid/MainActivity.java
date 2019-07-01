@@ -21,6 +21,7 @@ import android.telecom.Call;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.activity_main);
         //******************************************************************************************************************************
@@ -127,9 +129,9 @@ public class MainActivity extends AppCompatActivity {
         if(sp.contains(getString(R.string.Current_Server_Name))){
             String currentServerName=sp.getString((getString(R.string.Current_Server_Name)),"DNE");
             switch(currentServerName){
-                case "CGNet":radioButtonIMI.setChecked(true);
-                break;
-                case "IMI":radioButtonCGNet.setChecked(true);
+                case "CGNet":radioButtonCGNet.setChecked(true);
+                    break;
+                case "IMI":radioButtonIMI.setChecked(true);
                     break;
             }
         }
@@ -195,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
     //the url request on miss call script
     public void onMissCall(String number) {
         Toast.makeText(getBaseContext(), "Calling Number: "+number, Toast.LENGTH_LONG).show();
-        String urlCall=sp.getString((getString(R.string.Current_Server_Address)),"DNE")+"?number="+number;
+        String urlCall=sp.getString((getString(R.string.Current_Server_Address)),"DNE")+number;
         Log.d("url:",urlCall);
         requestQueue = Volley.newRequestQueue(this);
         stringRequest = new StringRequest(Request.Method.GET, urlCall,

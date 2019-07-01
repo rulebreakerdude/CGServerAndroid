@@ -69,7 +69,7 @@ public class CallReceiver extends BroadcastReceiver {
             e.printStackTrace();
         }
         m.setAccessible(true);
-        //callback to end call m.invoke(telephonyService);
+        //m.invoke(telephonyService);
     }
 
 
@@ -85,6 +85,8 @@ public class CallReceiver extends BroadcastReceiver {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
             super.onCallStateChanged(state, incomingNumber);
+            Log.d("this",incomingNumber);
+
             if(lastState == state){
                 //No change
                 return;
@@ -112,10 +114,12 @@ public class CallReceiver extends BroadcastReceiver {
                 case TelephonyManager.CALL_STATE_IDLE:
                     //End of call(Idle).  The type depends on the previous state(s)
                     if(lastState == TelephonyManager.CALL_STATE_RINGING){
-                        Log.d("state:","Missed Call");
+                        Log.d("this",incomingNumber);
+                        Log.d("state:","Missed Call Hey");
                         Intent intent  = new Intent("CUSTOM_ON_MISS_CALL_CALLBACK_RECEIVER");
                         intent.putExtra("incomingNumber",incomingNumber);
                         savedContext.sendBroadcast(intent);
+
                     }
                     else if(isIncoming){
                         Log.d("state:","Incoming call ended");
